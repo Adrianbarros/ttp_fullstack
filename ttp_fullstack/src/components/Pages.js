@@ -1,6 +1,8 @@
-import React, { Component } from 'react'
-import SignIn from './SignIn'
-import Register from './Register'
+import React, { Component } from 'react';
+import SignIn from './SignIn';
+import Register from './Register';
+import StockPage from './StockPage';
+import Records from './Records';
 import {
     BrowserRouter as Router,
     Switch,
@@ -9,20 +11,30 @@ import {
     NavLink
 } from 'react-router-dom';
 
+
 export class Pages extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            newUser: true,
+            firstName: null,
+            lastName: null,
+            email: null,
+            password: null,
+            formErrors: {
+                firstName: "",
+                lastName: "",
+                email: "",
+                password: "",
+            }
+
         }
+    }
+    handleSubmit = e => {
+        e.preventDefault();
     }
 
-    handleClick() {
-        this.state = {
-            newUser: false,
-        }
-        console.log('Click happened');
-    }
+
 
     render() {
 
@@ -33,6 +45,8 @@ export class Pages extends Component {
                 <switch>
                     <Route exact path="/" component={SignIn} />
                     <Route exact path="/Register" component={Register} />
+                    <Route excat path="/stock_page" component={StockPage} />
+                    <Route excat path="/records" component={Records} />
                 </switch>
             </Router>
         )

@@ -40,7 +40,6 @@
     "start": "cd backend && npm install && node index.js”",
     "dev": "nodemon -r dotenv/config api/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "react-scripts build",
     "heroku-postbuild": "cd src && npm install && npm run build"
   },
   "proxy": "http://localhost:5000",

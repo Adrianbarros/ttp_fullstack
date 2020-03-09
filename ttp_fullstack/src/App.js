@@ -1,19 +1,25 @@
 import React from 'react';
-import StockPage from './components/StockPage'
+import StockPage from './pages/StockPage'
 import './App.css';
 //import SignIn from './components/SignIn';
-import Pages from './components/Pages';
+import Pages from './pages/Pages';
+// adding redux
+import { Provider } from 'react-redux';
+import Store from './Store';
 
 
 class App extends React.Component {
   state = {
     total_amount: 5000,
-    price: [],
+    price: undefined,
     stock_data: [],
-    latest: undefined,
-
+    latest: '',
   }
-
+  /*
+  Get stock function that will react to the user buying a stock
+  Will use the API key to retrive laster stock of a given company 
+  it will also get how many stocks the user is buying for more calculationslater
+  */
   getStock = async (e) => {
     e.preventDefault();
     const ticker = e.target.elements.ticker.value;
@@ -26,19 +32,19 @@ class App extends React.Component {
     this.setState({
       latest: Object.keys(data['Time Series (1min)'])[0],
       //price: data.ts,
-      price: data,
-
-
+      //price: data['Time Series (1min)'].latest,
 
     })
     console.log(this.state.price);
   }
   render() {
     return (
-      <div className="App">
-        {/* <Pages /> */}
-        <StockPage getStock={this.getStock} />
-      </div>
+      <Provider store={Store}>
+        <div className="App">
+          {/* <Pages /> */}
+          <StockPage getStock={this.getStock} />
+        </div>
+      </Provider>
     );
   }
 }

@@ -6,9 +6,13 @@ import Pages from './pages/Pages';
 // adding redux
 import { Provider } from 'react-redux';
 import Store from './Store';
+import { loadUser } from './actions/authActions'
 
 
 class App extends React.Component {
+  componentDidMount() {
+    Store.dispatch(loadUser())
+  }
   state = {
     total_amount: 5000,
     price: undefined,
@@ -41,8 +45,8 @@ class App extends React.Component {
     return (
       <Provider store={Store}>
         <div className="App">
-          {/* <Pages /> */}
-          <StockPage getStock={this.getStock} />
+          <Pages />
+          {/* <StockPage getStock={this.getStock} /> */}
         </div>
       </Provider>
     );

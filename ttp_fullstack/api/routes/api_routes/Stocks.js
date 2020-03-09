@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const auth = require('../../../middleware/auth')
 //Stock model
 const Stock = require('../../models/Stocks');
 
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 
 //@route POST api/stocks
 //@desc  create stock
-router.post('/', (req, res) => {
+router.post('/', auth, (req, res) => {
     const newStock = new Stock({
         name: req.body.name
     });
@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
 
 //@route DELETE api/stocks
 //@desc delete stock
-router.delete('/:id', (req, res) => {
+router.delete('/:id', auth, (req, res) => {
     Stock.findById(req.params.id)
         .then(stock => stock.remove().then(() => res.json({ success: true })))
         /* for some reason it always works but sends a 404 ////Recise Later*/

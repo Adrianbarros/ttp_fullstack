@@ -13,6 +13,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles, recomposeColor } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { NavLink } from "react-router-dom";
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { register } from '../actions/authActions';
 
 
 
@@ -40,7 +43,22 @@ const classes = useStyles();
 
 
 export class Register extends React.Component {
-    handleSubmit = (e) => {
+    state = {
+        name: '',
+        // lastName: '',
+        email: '',
+        password: '',
+        msg: null
+    };
+    static propTypes = {
+        isAuthenticated: PropTypes.bool,
+        error: PropTypes.object.isRequired,
+        register: PropTypes.func.isRequired
+    }
+    onChange = e => {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+    onSubmit = (e) => {
         e.preventDefault();
     }
 
@@ -59,9 +77,9 @@ export class Register extends React.Component {
                     <Typography component="h1" variant="h5">
                         Sign up
                 </Typography>
-                    <form onSubmit={this.handleSubmit()} noValidate>
+                    <form onSubmit={this.onSubmit} noValidate>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={12} >
 
                                 <TextField
                                     autoComplete="fname"
@@ -72,10 +90,11 @@ export class Register extends React.Component {
                                     id="firstName"
                                     label="First Name"
                                     autoFocus
+                                    onChange={this.onChange}
                                 />
 
                             </Grid>
-                            <Grid item xs={12} sm={6}>
+                            {/* <Grid item xs={12} sm={6}>
                                 <TextField
                                     variant="outlined"
                                     required
@@ -84,8 +103,10 @@ export class Register extends React.Component {
                                     label="Last Name"
                                     name="lastName"
                                     autoComplete="lname"
-                                />
-                            </Grid>
+                                    onChange={this.onChange}
+
+                                /> */}
+                            {/* </Grid> */}
                             <Grid item xs={12}>
                                 <TextField
                                     variant="outlined"
@@ -95,6 +116,7 @@ export class Register extends React.Component {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
+                                    onChange={this.onChange}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -107,6 +129,7 @@ export class Register extends React.Component {
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
+                                    onChange={this.onChange}
                                 />
                             </Grid>
 
@@ -132,13 +155,21 @@ export class Register extends React.Component {
                     </form>
                 </div>
 
-            </Container>
+            </Container >
         );
 
     }
 }
 
+const mapStatetoProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    error: state.error
 
-export default Register
+});
+
+export default connect(
+    mapStatetoProps,
+    { register }
+)(Register);
 
 

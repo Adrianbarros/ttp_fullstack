@@ -34,7 +34,8 @@ export class StockPage extends Component {
         this.setState({ [e.target.name]: e.target.value });
     };
     onSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        this.props.getStock(e);
         const newStock = {
             name: this.state.ticker
         }

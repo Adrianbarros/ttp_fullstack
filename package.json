@@ -32,7 +32,7 @@
     "yarn": "^1.22.0"
   },
   "scripts": {
-    "start": "cd backend && npm install && node index.js",
+    "start": "react-scripts start",
     "dev": "nodemon -r dotenv/config api/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "react-scripts build",

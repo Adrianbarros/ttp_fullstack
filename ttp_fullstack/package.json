@@ -33,7 +33,7 @@
     "start": "react-scripts start",
     "dev": "nodemon -r dotenv/config api/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd client && npm install && npm run build"
+    "build": "react-scripts build"
   },
   "proxy": "http://localhost:5000",
   "browserslist": {

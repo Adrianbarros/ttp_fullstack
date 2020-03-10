@@ -27,7 +27,7 @@ mongoose
 //Use Routes
 app.use('/api/stocks', require('./routes/api_routes/Stocks'));
 app.use('/api/users', require('./routes/api_routes/Users'));
-app.use('/api/auth', require('./routes/api_routes/Auth'));
+app.use('/api/auth', require('./routes/api_routes/auth'));
 
 
 if (process.env.NODE_ENV === 'production') {

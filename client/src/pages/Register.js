@@ -1,51 +1,26 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-//import { LockOutlinedIcon } from '@material-ui/core/icons';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, recomposeColor } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import { NavLink } from "react-router-dom";
+import Avatar from '@material-ui/core/Avatar';
+import {
+    Alert,
+    Container, Col, Form,
+    FormGroup, Label, Input,
+} from 'reactstrap';
+import { NavLink, Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
+
 import PropTypes from 'prop-types';
 import { register } from '../actions/authActions';
+import { clearErrors } from '../actions/errorActions';
 
 
 
-const useStyles = theme => ({
-    paper: {
-        //marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        //margin: theme.spacing(1),
-        //backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        //marginTop: theme.spacing(3),
-    },
-    submit: {
-        //margin: theme.spacing(3, 0, 2),
-    },
-});
-const classes = useStyles();
 
 
 
 export class Register extends React.Component {
     state = {
         name: '',
-        // lastName: '',
         email: '',
         password: '',
         msg: null
@@ -53,13 +28,44 @@ export class Register extends React.Component {
     static propTypes = {
         isAuthenticated: PropTypes.bool,
         error: PropTypes.object.isRequired,
-        register: PropTypes.func.isRequired
+        register: PropTypes.func.isRequired,
+        clearErrors: PropTypes.func.isRequired
+    }
+    componentDidUpdate(prevProps) {
+        const { error, isAuthenticated } = this.props;
+        if (error !== prevProps.error) {
+            if (error.id === 'REGISTER_FAIL') {
+                this.setState({ msg: error.msg.msg });
+            }
+            else {
+                this.setState({ msg: null });
+            }
+        }
+        if (isAuthenticated) {
+
+        }
+
     }
     onChange = e => {
         this.setState({ [e.target.name]: e.target.value });
     }
     onSubmit = (e) => {
         e.preventDefault();
+        //pass the values
+        const { name, email, password } = this.state;
+        //create a new user
+        const newUser = {
+            name,
+            email,
+            password
+        };
+        //attempt to register
+        this.props.register(newUser);
+
+
+    };
+    toggle = () => {
+        this.props.clearErrors();
     }
 
     render() {
@@ -67,95 +73,64 @@ export class Register extends React.Component {
 
 
         return (
+            <Container className="App" className="themed-container" fluid="sm">
+                <h2>Register</h2>
+                <Col sm="12" sm={{ size: '6', offset: 3 }}>
+                    <Avatar  ></Avatar>
 
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
+                </Col>
+                <Col sm="12" md={{ size: 6, offset: 3 }}>
+                    {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
+                </Col>
+                <Form className="form" onSubmit={this.onSubmit}>
+                    <Col sm="12" md={{ size: 6, offset: 3 }}>
 
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign up
-                </Typography>
-                    <form onSubmit={this.onSubmit} noValidate>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} >
+                        <FormGroup>
+                            <Label for='name'></Label>
+                            <Input
+                                type="name"
+                                name="name"
+                                id="name"
+                                placeholder="name"
+                                onChange={this.onChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for='email'></Label>
+                            <Input
+                                type="email"
+                                name="email"
+                                id="exampleEmail"
+                                placeholder="email"
+                                onChange={this.onChange}
+                            />
+                        </FormGroup>
 
-                                <TextField
-                                    autoComplete="fname"
-                                    name="firstName"
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    id="firstName"
-                                    label="First Name"
-                                    autoFocus
-                                    onChange={this.onChange}
-                                />
+                        <FormGroup>
+                            <Label for='password'></Label>
+                            <Input
+                                type="password"
+                                name="password"
+                                id="password"
+                                placeholder="password"
+                                onChange={this.onChange}
+                            />
+                        </FormGroup>
 
-                            </Grid>
-                            {/* <Grid item xs={12} sm={6}>
-                                <TextField
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    id="lastName"
-                                    label="Last Name"
-                                    name="lastName"
-                                    autoComplete="lname"
-                                    onChange={this.onChange}
-
-                                /> */}
-                            {/* </Grid> */}
-                            <Grid item xs={12}>
-                                <TextField
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
-                                    onChange={this.onChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    name="password"
-                                    label="Password"
-                                    type="password"
-                                    id="password"
-                                    autoComplete="current-password"
-                                    onChange={this.onChange}
-                                />
-                            </Grid>
-
-                        </Grid>
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
-                            className={classes.submit}
                         >
                             Sign Up
                   </Button>
-                        <Grid container justify="flex-end">
-                            <Grid item>
+                    </Col>
+                </Form>
+                <NavLink to="/"> Already have an account? Sign in </NavLink>
+            </Container>
 
-                                {/* <Link href="#" variant="body2"  >
-                                        Already have an account? Sign in
-                      </Link> */}
-                                <NavLink to="/"> Already have an account? Sign in </NavLink>
-                            </Grid>
-                        </Grid>
-                    </form>
-                </div>
 
-            </Container >
         );
 
     }
@@ -169,7 +144,7 @@ const mapStatetoProps = state => ({
 
 export default connect(
     mapStatetoProps,
-    { register }
+    { register, clearErrors }
 )(Register);
 
 

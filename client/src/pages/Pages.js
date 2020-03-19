@@ -8,8 +8,10 @@ import {
     Switch,
     Route,
     Link,
-    NavLink
+    NavLink,
+    Redirect
 } from 'react-router-dom';
+
 
 
 export class Pages extends Component {
@@ -21,6 +23,7 @@ export class Pages extends Component {
             lastName: null,
             email: null,
             password: null,
+            isAuth: false,
             formErrors: {
                 firstName: "",
                 lastName: "",
@@ -30,10 +33,6 @@ export class Pages extends Component {
 
         }
     }
-    handleSubmit = e => {
-        e.preventDefault();
-    }
-
 
 
     render() {
@@ -42,12 +41,12 @@ export class Pages extends Component {
         console.log(newUser)
         return (
             <Router>
-                <switch>
+                <Switch>
                     <Route exact path="/" component={SignIn} />
                     <Route exact path="/Register" component={Register} />
-                    <Route excat path="/stock_page" component={StockPage} />
-                    <Route excat path="/records" component={Records} />
-                </switch>
+                    <Route exact path="/stock_page" component={StockPage} />
+                    <Route exact path="/records" component={Records} />
+                </Switch>
             </Router>
         )
     }

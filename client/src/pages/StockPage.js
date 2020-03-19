@@ -14,10 +14,18 @@ import uuid from 'react-uuid';//temporary
 //importing redux
 import { connect } from 'react-redux';
 import { addStocks } from '../actions/itemActions';
+import Logout from './components/Logout';
 
 
 //components
 import StockList from './components/StockList'
+import { login } from '../actions/authActions';
+import { LOGOUT_SUCCESS } from '../actions/types';
+
+
+import { logout } from '../actions/authActions';
+import Proptypes from 'prop-types';
+
 
 
 
@@ -26,6 +34,9 @@ export class StockPage extends Component {
         total_amount: 5000,
         ticker: '',
         qty: 1,
+    }
+    static propTypes = {
+        logout: Proptypes.func.isRequired
     }
     getStock = () => {
         this.props.getStock();
@@ -46,6 +57,12 @@ export class StockPage extends Component {
     render() {
         return (
             <Grid container spacing={0} >
+                <Grid item xs={12} sm={{ size: '6', offset: 6 }}>
+                    <NavLink onClick={this.props.logout} to="/">
+                        Logout
+                </NavLink>
+                </Grid>
+
                 <Grid item xs={6}>
                     <div>
                         <Container component="main" maxWidth="xs">
@@ -106,4 +123,4 @@ const mapStateToProps = state => ({
     stock: state.stock
 });
 
-export default connect(mapStateToProps, { addStocks })(StockPage);
+export default connect(mapStateToProps, { addStocks, Logout })(StockPage);
